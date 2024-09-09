@@ -10,6 +10,7 @@ import com.shopping.e_commerce.dto.ImageDTO.ImageDto;
 import com.shopping.e_commerce.dto.ProductDTO.AddProductRequest;
 import com.shopping.e_commerce.dto.ProductDTO.ProductDto;
 import com.shopping.e_commerce.dto.ProductDTO.UpdateProductRequest;
+import com.shopping.e_commerce.exceptions.AlreadyExistsException;
 import com.shopping.e_commerce.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -42,6 +43,10 @@ public class ProductService implements IProductService{
 
     @Override
     public Product addProduct(AddProductRequest request) {
+        if(productExists(request.getName(), request.getBrand())){
+            throw new AlreadyExistsException("Product " + request.getName() + " with brand " + request.getBrand() + " already exists");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -49,6 +54,10 @@ public class ProductService implements IProductService{
                 });
         request.setCategory(category);
         return productRepository.save(createProduct(request,category));
+    }
+
+    private boolean productExists(String name, String brand){
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 
     private Product createProduct(AddProductRequest request, Category category){

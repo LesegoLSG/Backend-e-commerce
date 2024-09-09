@@ -1,7 +1,11 @@
 package com.shopping.e_commerce.dto.UserDTO;
 
+import com.shopping.e_commerce.Entity.Role;
 import lombok.Data;
 import lombok.Getter;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 @Data
 public class CreateUserRequest {
@@ -11,4 +15,6 @@ public class CreateUserRequest {
     private String gender;
     private String email;
     private String password;
+    private Collection<Role> roles= new HashSet<>();
+
 }
