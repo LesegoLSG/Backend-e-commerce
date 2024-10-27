@@ -22,7 +22,11 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
+/**
+ * ImageController is a REST controller responsible for handling image-related
+ * operations in the shopping e-commerce system. This includes uploading, updating,
+ * retrieving, and deleting images associated with products.
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/images")
@@ -30,6 +34,13 @@ public class ImageController {
     @Autowired
     private final IImageService imageService;
 
+    /**
+     * Handles uploading of multiple images for a specific product.
+     *
+     * @param files List of images to be uploaded (received as multipart files)
+     * @param productId The ID of the product to associate the images with
+     * @return ResponseEntity containing the uploaded image details or an error message if upload fails
+     */
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, @RequestParam Long productId){
         try{
@@ -39,6 +50,14 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to upload", e.getMessage()));
         }
     }
+
+    /**
+     * Downloads an image by its ID.
+     *
+     * @param id The ID of the image to be downloaded
+     * @return ResponseEntity containing the image as a byte stream for download
+     * @throws SQLException In case of SQL issues when fetching image data
+     */
     @GetMapping("/image/download/{id}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long id) throws SQLException{
         Image image = imageService.getImageById(id);
@@ -47,6 +66,13 @@ public class ImageController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + image.getFileName() + "\"").body(resource);
     }
 
+    /**
+     * Updates an existing image by its ID.
+     *
+     * @param id The ID of the image to be updated
+     * @param file The new image file (received as multipart)
+     * @return ResponseEntity indicating success or an error message if the image is not found
+     */
     @PutMapping("/image/{id}/update")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long id, @RequestBody MultipartFile file){
         try{
@@ -61,6 +87,12 @@ public class ImageController {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed", INTERNAL_SERVER_ERROR));
     }
 
+    /**
+     * Deletes an image by its ID.
+     *
+     * @param id The ID of the image to be deleted
+     * @return ResponseEntity indicating success or an error message if the image is not found
+     */
     @DeleteMapping("/image/{id}/delete")
     public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long id){
         try{
