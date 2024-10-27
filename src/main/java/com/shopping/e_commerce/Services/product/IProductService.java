@@ -6,7 +6,9 @@ import com.shopping.e_commerce.dto.ProductDTO.ProductDto;
 import com.shopping.e_commerce.dto.ProductDTO.UpdateProductRequest;
 
 import java.util.List;
-
+/**
+ * Interface defining the operations for managing products in the e-commerce application.
+ */
 public interface IProductService {
     Product addProduct(AddProductRequest addRequest);
     Product getProductById(Long productId);

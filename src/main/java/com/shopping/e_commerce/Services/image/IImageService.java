@@ -5,7 +5,9 @@ import com.shopping.e_commerce.dto.ImageDTO.ImageDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
+/**
+ * Interface defining the operations for managing images in the e-commerce application.
+ */
 public interface IImageService {
     Image getImageById(Long id);
     void deleteImageById(Long id);

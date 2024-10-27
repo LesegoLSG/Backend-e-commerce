@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+/**
+ * Service class for managing cart items in the e-commerce application.
+ * Implements the ICartItemService interface to define cart item-related operations.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,13 @@ public class CartItemService implements ICartItemService{
     @Autowired
     private final ICartService cartService;
 
+    /**
+     * Adds an item to the cart. If the item already exists, its quantity is updated.
+     *
+     * @param cartId the ID of the cart
+     * @param productId the ID of the product to add
+     * @param quantity the quantity of the product to add
+     */
     @Override
     public void addItemToCart(Long cartId, Long productId, int quantity) {
         //Get the cart
@@ -53,6 +64,12 @@ public class CartItemService implements ICartItemService{
         cartRepository.save(cart);
     }
 
+    /**
+     * Deletes an item from the cart.
+     *
+     * @param cartId the ID of the cart
+     * @param itemId the ID of the cart item to delete
+     */
     @Override
     public void deleteItemFromCart(Long cartId, Long itemId) {
         Cart cart = cartService.getCartById(cartId);
@@ -61,16 +78,26 @@ public class CartItemService implements ICartItemService{
         cart.removeItem(itemToDelete);
         cartRepository.save(cart);
     }
-    //Does not update the cart totalprice
+    /**
+     * Updates the quantity of an item in the cart.
+     * This method does not update the total price of the cart.
+     *
+     * @param cartId the ID of the cart
+     * @param productId the ID of the product to update
+     * @param quantity the new quantity of the product
+     */
     @Override
     public void updateItemQuantity(Long cartId, Long productId, int quantity) {
+        // Get the cart by ID
         Cart cart = cartService.getCartById(cartId);
         System.out.println("CartId: " + cartId + " productId: " + productId + " quantity: " + quantity + " generated cart selection total amount:" + cart.getTotalAmount());
 
+        // Print details of items in the cart for debugging
         cart.getItems().forEach(item -> {
             System.out.println("---CartItem ID: " + item.getId() + ", Product ID: " + item.getProduct().getId());
         });
 
+        // Update the quantity of the specified cart item
         cart.getItems()
                 .stream()
                 .filter(item -> item.getId().equals(productId))
@@ -81,15 +108,28 @@ public class CartItemService implements ICartItemService{
                     item.setTotalPrice();
                     System.out.println("Service: " + item.getUnitPrice());
                 });
+        // Recalculate total amount for the cart
         BigDecimal totalAmount = cart.getItems().stream().map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalAmount(totalAmount);
+        // Save the updated cart to the database
         cartRepository.save(cart);
 
     }
 
+    /**
+     * Retrieves a cart item by cart ID and item ID.
+     *
+     * @param cartId the ID of the cart
+     * @param itemId the ID of the cart item
+     * @return the CartItem object
+     * @throws ResourceNotFoundException if the item is not found
+     */
     @Override
     public CartItem getCartItem(Long cartId, Long itemId){
+        // Get the cart by ID
         Cart cart = cartService.getCartById(cartId);
+
+        // Find the cart item in the cart
         System.out.println("Get cart details:" + cart.getId() + " price:" + cart.getTotalAmount());
         return cart.getItems()
                 .stream()

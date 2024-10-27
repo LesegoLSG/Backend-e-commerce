@@ -3,7 +3,9 @@ package com.shopping.e_commerce.Services.category;
 import com.shopping.e_commerce.Entity.Category;
 
 import java.util.List;
-
+/**
+ * Interface defining the operations for managing categories in the e-commerce application.
+ */
 public interface ICategoryService {
     Category getCategoryById(Long id);
     Category getCategoryByName(String name);

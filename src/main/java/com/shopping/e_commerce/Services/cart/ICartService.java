@@ -5,6 +5,9 @@ import com.shopping.e_commerce.Entity.User;
 
 import java.math.BigDecimal;
 
+/**
+ * Interface defining the operations for managing carts in the e-commerce application.
+ */
 public interface ICartService {
     Cart getCartById(Long id);
     void clearCart(Long id);

@@ -12,7 +12,6 @@ public class CreateUserRequest {
     private String firstName;
     private String lastName;
     private String contactNo;
-    private String gender;
     private String email;
     private String password;
     private Collection<Role> roles= new HashSet<>();

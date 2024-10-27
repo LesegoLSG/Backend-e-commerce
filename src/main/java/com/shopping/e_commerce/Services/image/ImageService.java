@@ -18,6 +18,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing images associated with products.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class ImageService implements IImageService{
@@ -28,12 +32,25 @@ public class ImageService implements IImageService{
     @Autowired
     private final ProductService productService;
 
+    /**
+     * Retrieves an image by its ID.
+     *
+     * @param id the ID of the image
+     * @return the Image object associated with the given ID
+     * @throws ResourceNotFoundException if the image does not exist
+     */
     @Override
     public Image getImageById(Long id) {
        return imageRepository.findById(id)
                .orElseThrow(() -> new ResourceNotFoundException("Image not found with id: " + id));
     }
 
+    /**
+     * Deletes an image by its ID.
+     *
+     * @param id the ID of the image to delete
+     * @throws ResourceNotFoundException if the image does not exist
+     */
     @Override
     public void deleteImageById(Long id) {
         imageRepository.findById(id).ifPresentOrElse(imageRepository :: delete, () ->{
@@ -41,6 +58,13 @@ public class ImageService implements IImageService{
         });
     }
 
+    /**
+     * Saves multiple images associated with a product.
+     *
+     * @param files the list of MultipartFile images to save
+     * @param productId the ID of the product associated with the images
+     * @return a list of ImageDto objects representing the saved images
+     */
     @Override
     public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
      Product product = productService.getProductById(productId);
@@ -74,7 +98,13 @@ public class ImageService implements IImageService{
      }
         return savedImageDto;
     }
-
+    /**
+     * Updates an existing image.
+     *
+     * @param file the new MultipartFile image to replace the existing one
+     * @param imageId the ID of the image to update
+     * @throws RuntimeException if an error occurs while updating the image
+     */
     @Override
     public void updateImage(MultipartFile file, Long imageId) {
         Image image = getImageById(imageId);
