@@ -80,7 +80,7 @@ mvn spring-boot:run
 | **GET**    | `/products/product/{ProductId}/product`| Retrieve details of a product  |
 | **POST**   | `/cartItems/add`                     | Add an item to the cart        |
 | **PUT**    | `/cartItems/cart/{cardId}/item/{itemId}` | Retrieve cart details          |
-| **DELETE** | `/cartItems/cart{cardId}/item/{itemId}/delete`| Remove an item from the cart   |
+| **DELETE** | `/cartItems/cart{cardId}/item/{itemId}/delete`| Remove an item from the cart |
 | **GET**   | `/carts/{cardId}/getCart`           | Retrieve card by id             |
 | **GET**   | `/carts/{cardId}/getTotalPrice`   | Retrieve total price for the cart |
 | **POST**   | `/orders/order/add`                | Create a new order             |
@@ -91,11 +91,11 @@ mvn spring-boot:run
 | **POST**   | `/billing/add`                 | Save billing information to user      |
 | **PUT**   | `/billing/update/{billingId}`           | Update a billing by id       |
 | **POST**   | `/shippingInfo/add`                | Save shipping information      |
-| **PUT**   | `/shippingInfo/update/{shippingId}`  | Save shipping information      |
-| **GET**   | `/shippingInfo/getShippingAddress/{shippingId}`| Save shipping information      |
-| **DELETE**   | `/shippingInfo/delete/{shippingId}`   | Save shipping information      |
+| **PUT**   | `/shippingInfo/update/{shippingId}`  | Update shipping information      |
+| **GET**   | `/shippingInfo/getShippingAddress/{shippingId}`| Retrieve shipping information      |
+| **DELETE**   | `/shippingInfo/delete/{shippingId}`   | Remove shipping information      |
 | **POST**   | `/images/upload`                | Save image to product      |
-| **GET**   | `/images/image/download/{ImageId}` | Save image to product      |
+| **GET**   | `/images/image/download/{ImageId}` | Retrieve image by id      |
 
 
 ### Authentication and Authorization
